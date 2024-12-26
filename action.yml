@@ -20,10 +20,11 @@ runs:
       run: mkdir -p ${{ inputs.install-dir }}
 
     - name: Download Qt5 Static Build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: qt5-static-msvc2019
         path: ${{ inputs.install-dir }}
+        repository: ${{ github.repository }}
     
     - name: Setup Qt Environment
       shell: bash

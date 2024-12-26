@@ -16,11 +16,11 @@ jobs:
     runs-on: windows-2019
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Cache Qt5 static build
       id: cache-qt
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           qt5-static
@@ -52,7 +52,8 @@ jobs:
         nmake install
         
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: qt5-static-msvc${{ env.VSVER }}
-        path: qt5-static/installed 
+        path: qt5-static/installed
+        retention-days: 90 
