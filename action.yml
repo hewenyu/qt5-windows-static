@@ -1,6 +1,9 @@
 name: 'Qt5 Windows Static'
-description: 'Setup Qt5 static build environment for Windows'
+description: 'Setup Qt5 static build environment for Windows using vcpkg'
 author: 'hewenyu'
+branding:
+  icon: 'package'
+  color: 'green'
 
 inputs:
   qt-version:
@@ -11,6 +14,11 @@ inputs:
     description: 'Directory to install Qt'
     required: false
     default: '${{ github.workspace }}/qt5-static'
+
+outputs:
+  qt5-dir:
+    description: 'The directory where Qt5 is installed'
+    value: ${{ inputs.install-dir }}
 
 runs:
   using: 'composite'
