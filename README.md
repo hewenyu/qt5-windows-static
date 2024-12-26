@@ -34,13 +34,3 @@ steps:
       cmake --build build --config Release
 ```
 
-### 在本地项目中使用
-
-1. 从 [Actions](https://github.com/hewenyu/qt5-windows-static/actions) 下载最新构建产物
-2. 解压到本地目录
-3. 设置 `Qt5_DIR` 环境变量指向解压目录
-
-## 许可证
-
-MIT License (Qt 许可证条款另行遵循)
-

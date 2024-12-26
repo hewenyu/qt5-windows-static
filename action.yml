@@ -15,8 +15,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Create Install Directory
+      shell: bash
+      run: mkdir -p ${{ inputs.install-dir }}
+
     - name: Download Qt5 Static Build
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: qt5-static-msvc2019
         path: ${{ inputs.install-dir }}
@@ -24,4 +28,5 @@ runs:
     - name: Setup Qt Environment
       shell: bash
       run: |
-        echo "Qt5_DIR=${{ inputs.install-dir }}" >> $GITHUB_ENV 
+        echo "Qt5_DIR=${{ inputs.install-dir }}" >> $GITHUB_ENV
+        echo "CMAKE_PREFIX_PATH=${{ inputs.install-dir }}" >> $GITHUB_ENV 
