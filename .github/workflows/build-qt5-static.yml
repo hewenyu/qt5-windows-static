@@ -58,13 +58,40 @@ jobs:
         mkdir build
         cd build
         call ..\configure.bat -static -debug-and-release -platform win32-msvc -prefix "${{ env.SHORT_ROOT }}\qt5-static\installed" ^
-        -opensource -confirm-license -nomake examples -nomake tests -skip qtwebengine ^
-        -feature-accessibility -feature-concurrent -feature-xml -feature-sql -feature-sql-sqlite ^
-        -feature-network -feature-opengl -feature-testlib ^
-        -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-pcre -qt-harfbuzz -openssl-linked ^
-        -feature-dbus -feature-qml-debug -feature-quick-designer -feature-windeployqt -feature-linguist ^
-        -feature-pdf -feature-printer -feature-quickcontrols2 -feature-quicktemplates2 -feature-widgets ^
-        -feature-quickwidgets -feature-quickparticles -feature-shadertools -feature-vulkan ^
+        -opensource -confirm-license -nomake examples -nomake tests ^
+        -skip qtwebengine ^
+        -skip qtlocation ^
+        -skip qtwebchannel ^
+        -skip qtwebsockets ^
+        -skip qtwebview ^
+        -skip qtwebglplugin ^
+        -feature-accessibility ^
+        -feature-concurrent ^
+        -feature-xml ^
+        -feature-sql ^
+        -feature-sql-sqlite ^
+        -feature-network ^
+        -feature-opengl ^
+        -feature-testlib ^
+        -qt-zlib ^
+        -qt-libpng ^
+        -qt-libjpeg ^
+        -qt-freetype ^
+        -qt-pcre ^
+        -qt-harfbuzz ^
+        -openssl-linked ^
+        -feature-dbus ^
+        -feature-qml-debug ^
+        -feature-quick-designer ^
+        -feature-windeployqt ^
+        -feature-linguist ^
+        -feature-pdf ^
+        -feature-printer ^
+        -feature-widgets ^
+        -feature-quickwidgets ^
+        -feature-quickparticles ^
+        -feature-shadertools ^
+        -feature-vulkan ^
         -mp -optimize-size
       
     - name: Build Qt

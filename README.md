@@ -17,6 +17,14 @@
 - 代码体积优化 (-optimize-size)
 - 短路径优化 (避免 MSVC 长路径限制)
 
+### 跳过的模块
+- QtWebEngine
+- QtLocation
+- QtWebChannel
+- QtWebSockets
+- QtWebView
+- QtWebGLPlugin
+
 ### 包含的功能和模块
 
 #### 核心功能
@@ -45,8 +53,6 @@
 - 语言工具 (Linguist)
 - PDF 支持
 - 打印机支持
-- Quick Controls 2
-- Quick Templates 2
 - Widgets 支持
 - Quick Widgets
 - Quick Particles
@@ -85,18 +91,38 @@ configure.bat -static -debug-and-release -platform win32-msvc ^
     -opensource -confirm-license ^
     -nomake examples -nomake tests ^
     -skip qtwebengine ^
-    -feature-accessibility -feature-concurrent ^
-    -feature-xml -feature-sql -feature-sql-sqlite ^
-    -feature-network -feature-opengl -feature-testlib ^
-    -qt-zlib -qt-libpng -qt-libjpeg ^
-    -qt-freetype -qt-pcre -qt-harfbuzz ^
+    -skip qtlocation ^
+    -skip qtwebchannel ^
+    -skip qtwebsockets ^
+    -skip qtwebview ^
+    -skip qtwebglplugin ^
+    -feature-accessibility ^
+    -feature-concurrent ^
+    -feature-xml ^
+    -feature-sql ^
+    -feature-sql-sqlite ^
+    -feature-network ^
+    -feature-opengl ^
+    -feature-testlib ^
+    -qt-zlib ^
+    -qt-libpng ^
+    -qt-libjpeg ^
+    -qt-freetype ^
+    -qt-pcre ^
+    -qt-harfbuzz ^
     -openssl-linked ^
-    -feature-dbus -feature-qml-debug ^
-    -feature-quick-designer -feature-windeployqt ^
-    -feature-linguist -feature-pdf -feature-printer ^
-    -feature-quickcontrols2 -feature-quicktemplates2 ^
-    -feature-widgets -feature-quickwidgets ^
-    -feature-quickparticles -feature-shadertools ^
-    -feature-vulkan
+    -feature-dbus ^
+    -feature-qml-debug ^
+    -feature-quick-designer ^
+    -feature-windeployqt ^
+    -feature-linguist ^
+    -feature-pdf ^
+    -feature-printer ^
+    -feature-widgets ^
+    -feature-quickwidgets ^
+    -feature-quickparticles ^
+    -feature-shadertools ^
+    -feature-vulkan ^
+    -mp -optimize-size
 ```
 
