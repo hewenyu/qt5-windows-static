@@ -12,6 +12,47 @@
 - 类型: 静态库（Static Library）
 - 配置: Debug & Release
 
+### 编译优化
+- 多处理器编译 (-mp)
+- 代码体积优化 (-optimize-size)
+- 短路径优化 (避免 MSVC 长路径限制)
+
+### 包含的功能和模块
+
+#### 核心功能
+- 可访问性支持 (Accessibility)
+- 并发支持 (Concurrent)
+- XML 支持
+- SQL 和 SQLite 支持
+- 网络功能
+- OpenGL 支持
+- 测试库支持 (TestLib)
+
+#### 内置第三方库
+- zlib (qt-zlib)
+- libpng (qt-libpng)
+- libjpeg (qt-libjpeg)
+- freetype (qt-freetype)
+- pcre (qt-pcre)
+- harfbuzz (qt-harfbuzz)
+- OpenSSL (linked)
+
+#### Qt Quick 和 GUI 功能
+- DBus 支持
+- QML 调试
+- Quick Designer 支持
+- Windows 部署工具 (windeployqt)
+- 语言工具 (Linguist)
+- PDF 支持
+- 打印机支持
+- Quick Controls 2
+- Quick Templates 2
+- Widgets 支持
+- Quick Widgets
+- Quick Particles
+- Shader Tools
+- Vulkan 支持
+
 ## 使用方法
 
 ### 在 GitHub Actions 中使用
@@ -32,5 +73,30 @@ steps:
     run: |
       cmake -B build -S . -DCMAKE_PREFIX_PATH=${{ env.Qt5_DIR }}
       cmake --build build --config Release
+```
+
+### 构建配置详情
+
+完整的构建配置参数如下：
+
+```batch
+configure.bat -static -debug-and-release -platform win32-msvc ^
+    -prefix "<install_path>" ^
+    -opensource -confirm-license ^
+    -nomake examples -nomake tests ^
+    -skip qtwebengine ^
+    -feature-accessibility -feature-concurrent ^
+    -feature-xml -feature-sql -feature-sql-sqlite ^
+    -feature-network -feature-opengl -feature-testlib ^
+    -qt-zlib -qt-libpng -qt-libjpeg ^
+    -qt-freetype -qt-pcre -qt-harfbuzz ^
+    -openssl-linked ^
+    -feature-dbus -feature-qml-debug ^
+    -feature-quick-designer -feature-windeployqt ^
+    -feature-linguist -feature-pdf -feature-printer ^
+    -feature-quickcontrols2 -feature-quicktemplates2 ^
+    -feature-widgets -feature-quickwidgets ^
+    -feature-quickparticles -feature-shadertools ^
+    -feature-vulkan
 ```
 
