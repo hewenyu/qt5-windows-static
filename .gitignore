@@ -1,0 +1,55 @@
+# Qt编译相关
+qt5-static/
+qt.zip
+*.obj
+*.lib
+*.pdb
+*.exp
+*.ilk
+*.exe
+*.dll
+*.manifest
+*.res
+*.rc
+*.tlog
+*.log
+*.lastbuildstate
+*.cache
+*.user
+*.sdf
+*.opensdf
+*.suo
+*.vcxproj.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*.ncb
+*.sbr
+*.tlb
+*.tlh
+*.bak
+*.intermediate.manifest
+*.idb
+
+# Visual Studio 临时文件
+.vs/
+Debug/
+Release/
+x64/
+Win32/
+ipch/
+*.VC.db
+*.VC.VC.opendb
+
+# 系统临时文件
+[Tt]humbs.db
+*.DS_Store
+
+# 编译输出目录
+build/
+installed/
+
+# 其他临时文件
+*.swp
+*~ 

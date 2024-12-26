@@ -1,0 +1,27 @@
+name: 'Qt5 Windows Static'
+description: 'Setup Qt5 static build environment for Windows'
+author: 'hewenyu'
+
+inputs:
+  qt-version:
+    description: 'Qt version to use'
+    required: false
+    default: '5.15.2'
+  install-dir:
+    description: 'Directory to install Qt'
+    required: false
+    default: '${{ github.workspace }}/qt5-static'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download Qt5 Static Build
+      uses: actions/download-artifact@v2
+      with:
+        name: qt5-static-msvc2019
+        path: ${{ inputs.install-dir }}
+    
+    - name: Setup Qt Environment
+      shell: bash
+      run: |
+        echo "Qt5_DIR=${{ inputs.install-dir }}" >> $GITHUB_ENV 

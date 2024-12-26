@@ -1,0 +1,58 @@
+name: Build Qt5 Static Libraries
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  QT_VERSION: 5.15.2
+  VSVER: 2019
+
+jobs:
+  build:
+    runs-on: windows-2019
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Cache Qt5 static build
+      id: cache-qt
+      uses: actions/cache@v2
+      with:
+        path: |
+          qt5-static
+        key: qt5-static-${{ env.QT_VERSION }}-msvc${{ env.VSVER }}
+        
+    - name: Download Qt Source
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      run: |
+        curl -L --output qt.zip https://download.qt.io/official_releases/qt/5.15/${{ env.QT_VERSION }}/single/qt-everywhere-src-${{ env.QT_VERSION }}.zip
+        7z x qt.zip -oqt5-static
+      shell: pwsh
+      
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Configure Qt
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      working-directory: qt5-static/qt-everywhere-src-${{ env.QT_VERSION }}
+      run: |
+        mkdir build
+        cd build
+        ..\configure.bat -static -debug-and-release -platform win32-msvc -prefix "${{ github.workspace }}\qt5-static\installed" -opensource -confirm-license -nomake examples -nomake tests -skip qtwebengine
+      
+    - name: Build Qt
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      working-directory: qt5-static/qt-everywhere-src-${{ env.QT_VERSION }}/build
+      run: |
+        nmake
+        nmake install
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: qt5-static-msvc${{ env.VSVER }}
+        path: qt5-static/installed 
