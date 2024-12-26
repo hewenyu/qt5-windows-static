@@ -23,23 +23,28 @@ jobs:
     - name: Setup vcpkg
       shell: cmd
       run: |
+        if exist %VCPKG_ROOT% rmdir /s /q %VCPKG_ROOT%
         git clone https://github.com/Microsoft/vcpkg.git %VCPKG_ROOT%
-        cd %VCPKG_ROOT%
-        .\bootstrap-vcpkg.bat
-        .\vcpkg.exe integrate install
+        cd /d %VCPKG_ROOT%
+        call bootstrap-vcpkg.bat
+        vcpkg.exe integrate install
     
     - name: Cache vcpkg
       uses: actions/cache@v4
+      id: cache-vcpkg
       with:
         path: |
           ${{ env.VCPKG_ROOT }}\installed
           ${{ env.VCPKG_ROOT }}\packages
-        key: vcpkg-${{ runner.os }}-${{ env.VCPKG_DEFAULT_TRIPLET }}-qt5
+        key: vcpkg-${{ runner.os }}-${{ env.VCPKG_DEFAULT_TRIPLET }}-qt5-${{ hashFiles('**/vcpkg.json') }}
+        restore-keys: |
+          vcpkg-${{ runner.os }}-${{ env.VCPKG_DEFAULT_TRIPLET }}-qt5-
     
     - name: Install Qt5 Components
       shell: cmd
       run: |
-        %VCPKG_ROOT%\vcpkg.exe install ^
+        cd /d %VCPKG_ROOT%
+        vcpkg.exe install ^
         qt5-base:x64-windows-static ^
         qt5-multimedia:x64-windows-static ^
         qt5-tools:x64-windows-static ^
