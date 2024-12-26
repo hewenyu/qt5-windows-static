@@ -2,7 +2,7 @@
 
 [![Build Qt5 Static Libraries](https://github.com/hewenyu/qt5-windows-static/actions/workflows/build-qt5-static.yml/badge.svg)](https://github.com/hewenyu/qt5-windows-static/actions/workflows/build-qt5-static.yml)
 
-使用 GitHub Actions 自动编译打包 Qt5.15.2 的 Windows 静态库，用于加速其他项目的构建过程。
+使用 GitHub Actions 和 vcpkg 打包 Qt5.15.2 的 Windows 静态库，用于加速其他项目的构建过程。
 
 ## 构建信息
 
@@ -11,53 +11,26 @@
 - 编译器: MSVC 2019
 - 类型: 静态库（Static Library）
 - 配置: Debug & Release
+- 依赖管理: vcpkg
 
-### 编译优化
-- 多处理器编译 (-mp)
-- 代码体积优化 (-optimize-size)
-- 短路径优化 (避免 MSVC 长路径限制)
+### 包含的 Qt 组件
+- qt5-base (核心组件)
+- qt5-multimedia (多媒体支持)
+- qt5-tools (开发工具)
+- qt5-declarative (QML 支持)
+- qt5-activeqt (ActiveX 支持)
+- qt5-imageformats (图像格式支持)
+- qt5-svg (SVG 支持)
+- qt5-charts (图表支持)
+- qt5-networkauth (网络认证)
+- qt5-winextras (Windows 特性支持)
 
-### 跳过的模块
-- QtWebEngine
-- QtLocation
-- QtWebChannel
-- QtWebSockets
-- QtWebView
-- QtWebGLPlugin
-
-### 包含的功能和模块
-
-#### 核心功能
-- 可访问性支持 (Accessibility)
-- 并发支持 (Concurrent)
-- XML 支持
-- SQL 和 SQLite 支持
-- 网络功能
-- OpenGL 支持
-- 测试库支持 (TestLib)
-
-#### 内置第三方库
-- zlib (qt-zlib)
-- libpng (qt-libpng)
-- libjpeg (qt-libjpeg)
-- freetype (qt-freetype)
-- pcre (qt-pcre)
-- harfbuzz (qt-harfbuzz)
-- OpenSSL (linked)
-
-#### Qt Quick 和 GUI 功能
-- DBus 支持
-- QML 调试
-- Quick Designer 支持
-- Windows 部署工具 (windeployqt)
-- 语言工具 (Linguist)
-- PDF 支持
-- 打印机支持
-- Widgets 支持
-- Quick Widgets
-- Quick Particles
-- Shader Tools
-- Vulkan 支持
+### 功能特性
+- 完整的静态库支持
+- MSVC 2019 编译
+- vcpkg 包管理
+- Debug 和 Release 配置
+- 自动依赖处理
 
 ## 使用方法
 
@@ -72,57 +45,45 @@ steps:
       install-dir: '${{ github.workspace }}/qt5-static'  # 可选，默认为此路径
 ```
 
-之后可以直接使用 Qt5 的静态库：
+### 在本地使用 vcpkg 安装
+
+如果你想在本地复制这个环境，可以使用以下命令：
+
+```batch
+vcpkg install ^
+    qt5-base:x64-windows-static ^
+    qt5-multimedia:x64-windows-static ^
+    qt5-tools:x64-windows-static ^
+    qt5-declarative:x64-windows-static ^
+    qt5-activeqt:x64-windows-static ^
+    qt5-imageformats:x64-windows-static ^
+    qt5-svg:x64-windows-static ^
+    qt5-charts:x64-windows-static ^
+    qt5-networkauth:x64-windows-static ^
+    qt5-winextras:x64-windows-static
+```
+
+### 在 CMake 项目中使用
+
+```cmake
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.15)
+project(YourProject)
+
+set(CMAKE_PREFIX_PATH "$ENV{Qt5_DIR}")
+set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
+set(VCPKG_TARGET_TRIPLET "x64-windows-static")
+
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+# ... 其他配置
+```
+
+然后在 GitHub Actions 中构建：
 
 ```yaml
   - name: Build Your Project
     run: |
       cmake -B build -S . -DCMAKE_PREFIX_PATH=${{ env.Qt5_DIR }}
       cmake --build build --config Release
-```
-
-### 构建配置详情
-
-完整的构建配置参数如下：
-
-```batch
-configure.bat -static -debug-and-release -platform win32-msvc ^
-    -prefix "<install_path>" ^
-    -opensource -confirm-license ^
-    -nomake examples -nomake tests ^
-    -skip qtwebengine ^
-    -skip qtlocation ^
-    -skip qtwebchannel ^
-    -skip qtwebsockets ^
-    -skip qtwebview ^
-    -skip qtwebglplugin ^
-    -feature-accessibility ^
-    -feature-concurrent ^
-    -feature-xml ^
-    -feature-sql ^
-    -feature-sql-sqlite ^
-    -feature-network ^
-    -feature-opengl ^
-    -feature-testlib ^
-    -qt-zlib ^
-    -qt-libpng ^
-    -qt-libjpeg ^
-    -qt-freetype ^
-    -qt-pcre ^
-    -qt-harfbuzz ^
-    -openssl-linked ^
-    -feature-dbus ^
-    -feature-qml-debug ^
-    -feature-quick-designer ^
-    -feature-windeployqt ^
-    -feature-linguist ^
-    -feature-pdf ^
-    -feature-printer ^
-    -feature-widgets ^
-    -feature-quickwidgets ^
-    -feature-quickparticles ^
-    -feature-shadertools ^
-    -feature-vulkan ^
-    -mp -optimize-size
 ```
 
